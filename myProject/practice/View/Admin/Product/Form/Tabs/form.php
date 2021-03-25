@@ -1,5 +1,6 @@
 <?php $product = $this->getTableRow(); ?>
-<?php $categoryOptions = $this->getCategoryOptions(); //print_r($categoryOptions); die; ?>
+<?php $categoryOptions = $this->getCategoryOptions(); ?>
+<?php $brandOptions = $this->getBrandOptions(); ?>
 
 <table>
     <tr>
@@ -32,10 +33,22 @@
         </td>
         <td>Category</td>
         <td>
-            <select name="category[categoryId]" id="" style="padding: 10px; width: 100%">
+            <select name="category[categoryId]" id="" style="padding: 10px; width: 100%" multiple>
                 <?php if($categoryOptions): ?>
                     <?php foreach ($categoryOptions as $categoryId => $name): ?>
                         <option value="<?php echo $categoryId; ?>"><?php echo $name; ?></option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Brand</td>
+        <td>
+            <select name="category[brandId]" id="" style="padding: 10px; width: 100%">
+                <?php if($brandOptions): ?>
+                    <?php foreach ($brandOptions as $brandId => $name): ?>
+                        <option value="<?php echo $brandId; ?>"><?php echo $name; ?></option>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </select>

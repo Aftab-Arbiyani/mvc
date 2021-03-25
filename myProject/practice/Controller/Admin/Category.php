@@ -4,7 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Model\Category');
 Mage::loadFileByClassName('Controller\Core\Admin');
 
 class Category extends \Controller\Core\Admin

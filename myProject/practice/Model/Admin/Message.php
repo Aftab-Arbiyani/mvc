@@ -6,7 +6,6 @@ namespace Model\Admin;
 
 class Message extends Session
 {
-
     public function setSuccess($message)
     {
         $this->success = $message;

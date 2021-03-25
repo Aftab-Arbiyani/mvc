@@ -5,12 +5,9 @@ use Mage;
 use Exception;
 
 Mage::loadFileByClassName('Controller\Core\Admin');
-Mage::loadFileByClassName('Model\Product\Media');
 
-
-class Media extends \Controller\Core\Admin{
- 
-
+class Media extends \Controller\Core\Admin
+{
     public function indexAction()
     {
         $layout = $this->getLayout();
@@ -108,14 +105,7 @@ class Media extends \Controller\Core\Admin{
                     $value['gallery'] = 1;
                 }
                 $image1->setData($value);
-                if($image1->save())
-                {
-                    $this->getMessage()->setSuccess('Data saved successfully.');
-                }
-                else 
-                {
-                    $this->getMessage()->setFailure("Unable to save data.");
-                }
+                
             }
             $form = Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($image1)->toHtml();
             $response = [

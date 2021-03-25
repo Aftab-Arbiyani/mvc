@@ -11,6 +11,7 @@
     <a onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', 'admin_cms'); ?>').load()" href="javascript:void(0);">CMS</a>
     <a onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', 'admin_customergroup'); ?>').load()" href="javascript:void(0);">Customer Group</a>
     <a onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', 'admin_attribute'); ?>').load()" href="javascript:void(0);">Attribute</a>
+    <a onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', 'admin_brand'); ?>').load()" href="javascript:void(0);">Brand</a>
     <!-- <a href="logout.php" style="float: right">Log Out</a> -->
     <a onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', 'admin_dashboard'); ?>').load()" href="javascript:void(0);"style="float: right"><i class="fa fa-home" aria-hidden="false"></i>&nbsp; &nbsp;Home</a> 
 </div><br><br>

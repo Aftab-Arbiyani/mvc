@@ -41,7 +41,7 @@ class Template
         return $content;
     }
 
-    public function setController(Controller\Core\Admin $controller)
+    public function setController(\Controller\Core\Admin $controller)
     {
         $this->controller = $controller;
         return $this;

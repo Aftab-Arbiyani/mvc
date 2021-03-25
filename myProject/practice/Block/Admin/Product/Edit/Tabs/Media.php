@@ -30,7 +30,7 @@ class Media extends \Block\Core\Edit
     {
         if(!$this->image){
             $this->setImage();
-        }
+        } 
         return $this->image;
     }
 }

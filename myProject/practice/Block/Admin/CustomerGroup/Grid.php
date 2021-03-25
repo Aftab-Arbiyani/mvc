@@ -2,32 +2,48 @@
 
 namespace Block\Admin\CustomerGroup;
 
-\Mage::loadFileByClassName('Block\Core\Template');
+\Mage::loadFileByClassName('Block\Core\Grid');
 
-class Grid extends \Block\Core\Template
+class Grid extends \Block\Core\Grid
 {
-    protected $customerGroups = [];
- 
-    public function __construct() 
-    { 
-        parent::__construct();
-        $this->setTemplate('./View/Admin/CustomerGroup/grid.php');
-    }
-    public function setCustomerGroup($customerGroups = null)
+    public function prepareCollection()
     {
-        if(!$customerGroups){
-            $customerGroup = \Mage::getModel('Model\Customer\Group');
-            $customerGroups = $customerGroup->fetchAll();
-        }
-        $this->customerGroups = $customerGroups;
+        $customerGroup = \Mage::getModel('Model\Customer\Group');
+        $collection = $customerGroup->fetchAll();
+        $this->setcollection($collection);
         return $this;
     }
-    public function getCustomerGroup()
+    public function prepareColumns()
     {
-        if(!$this->customerGroups){
-            $this->setCustomerGroup();
-        }
-        return $this->customerGroups;
+        $this->addColumn('groupId', ['field' => 'groupId', 'label' => 'Id', 'type' => 'number']);
+        $this->addColumn('name', ['field' => 'name', 'label' => 'Group Name', 'type' => 'text']);
+        $this->addColumn('createdDate', ['field' => 'createdDate', 'label' => 'Created Date', 'type' => 'date']);
+    }
+    public function prepareActions()
+    {
+        $this->addAction('edit', ['label' => 'Edit', 'method' => 'getEditUrl', 'ajax' => true]);
+        $this->addAction('delete', ['label' => 'Delete', 'method' => 'getDeleteUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function getEditUrl($row)
+    {
+        $url = $this->getUrl()->geturl('form', null, ['id' => $row->groupId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function getDeleteUrl($row)
+    {
+        $url = $this->getUrl()->geturl('delete', null, ['id' => $row->groupId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function prepareButtons()
+    {
+        $this->addButtons('addnew', ['label' => 'Add New', 'method' => 'getAddNewUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function getAddNewUrl()
+    {
+        $url = $this->getUrl()->geturl('form');
+        return "mage.setUrl('{$url}').resetParams().load()";
     }
 }
 

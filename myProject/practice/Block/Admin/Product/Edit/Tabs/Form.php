@@ -39,9 +39,15 @@ class Form extends \Block\Core\Edit
                     $pathId = implode("=>", $pathIds);
                 }
             }
-            $this->categoryOptions = ["-1" => "Select"] + $this->categoryOptions;
+            $this->categoryOptions = $this->categoryOptions;
         }
         return $this->categoryOptions;
+    }
+    public function getBrandOptions()
+    {
+        $brand = Mage::getModel('Model\Brand');
+        $query = "SELECT `brandId`, `name` FROM `{$brand->getTableName()}`;";
+        return $brand->getAdapter()->fetchPairs($query);
     }
 }
 

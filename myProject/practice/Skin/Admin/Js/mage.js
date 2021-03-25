@@ -56,12 +56,17 @@ Base.prototype = {
         form = $(button).parents("form");
         var data = new FormData();
         var file = $(id)[0].files;
+        var data1 = form.serializeArray();
+        $(data1).each(function(name, value) {
+            data.append(value['name'], value['value']);
+        });
         data.append('file', file[0]);
         this.setParams(data);
         this.setMethod(form.attr('method'));
         this.setUrl(form.attr('action'));
         return this;
     },
+
     uploadFile: function(){
         var self = this;
         let request = $.ajax({
@@ -79,8 +84,7 @@ Base.prototype = {
     },
     load: function(){
 
-        var self = this; 
-
+        var self = this;
         var request = $.ajax({
             method: this.getMethod(),
             url: this.getUrl(),

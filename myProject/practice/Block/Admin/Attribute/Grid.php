@@ -2,33 +2,53 @@
 
 namespace Block\Admin\Attribute;
 
-\Mage::loadFileByClassName('Block\Core\Template');
+\Mage::loadFileByClassName('Block\Core\Grid');
 
-class Grid extends \Block\Core\Template
+class Grid extends \Block\Core\Grid
 {
-    protected $attributes = [];
-
-    public function __construct()
+    public function prepareCollection()
     {
-        parent::__construct();
-        $this->setTemplate('./View/Admin/Attribute/grid.php'); 
-    }
-    public function setAttributes($attributes = null)
-    {
-        if(!$attributes)
-        {
-            $attributes = \Mage::getModel('Model\Attribute')->fetchAll();
-        }
-        $this->attributes = $attributes;
+        $attribute = \Mage::getModel('Model\Attribute');
+        $collection = $attribute->fetchAll();
+        $this->setCollection($collection);
         return $this;
     }
-    public function getAttributes()
+    public function prepareColumns()
     {
-        if(!$this->attributes)
-        {
-            $this->setAttributes();
-        }
-        return $this->attributes;
+        $this->addColumn('attributeId', ['field' => 'attributeId', 'label' => 'Id', 'type' => 'number']);
+        $this->addColumn('name', ['field' => 'name', 'label' => 'Name', 'type' => 'text']);
+        $this->addColumn('entityTypeId', ['field' => 'entityTypeId', 'label' => 'Entity Type', 'type' => 'text']);
+        $this->addColumn('code', ['field' => 'code', 'label' => 'Code', 'type' => 'text']);
+        $this->addColumn('code', ['field' => 'code', 'label' => 'Code', 'type' => 'text']);
+        $this->addColumn('inputType', ['field' => 'inputType', 'label' => 'Input Type', 'type' => 'text']);
+        $this->addColumn('backendType', ['field' => 'backendType', 'label' => 'Backend Type', 'type' => 'text']);
+        return $this;
+    }
+    public function prepareActions()
+    {
+        $this->addAction('edit', ['label' => 'Edit', 'method' => 'getEditUrl', 'ajax' => true]);
+        $this->addAction('delete', ['label' => 'Delete', 'method' => 'getDeleteUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function getEditUrl($row)
+    {
+        $url = $this->getUrl()->geturl('form', null, ['id' => $row->attributeId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function getDeleteUrl($row)
+    {
+        $url = $this->getUrl()->geturl('delete', null, ['id' => $row->attributeId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function prepareButtons()
+    {
+        $this->addButtons('addnew', ['label' => 'Add New', 'method' => 'getAddNewUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function getAddNewUrl()
+    {
+        $url = $this->getUrl()->geturl('form');
+        return "mage.setUrl('{$url}').resetParams().load()";
     }
 }
 

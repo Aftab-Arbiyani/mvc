@@ -2,31 +2,51 @@
 
 namespace Block\Admin\Category;
 
-\Mage::loadFileByClassName('Block\Core\Template');
+\Mage::loadFileByClassName('Block\Core\Grid');
 
-class Grid extends \Block\Core\Template{
+class Grid extends \Block\Core\Grid
+{
+    protected $categoryOptions = [];
 
-    protected $categorys = [];
-    protected $categoryOptions = []; 
-
-    public function __construct(){
-        $this->setTemplate('./View/Admin/Category/grid.php');
-    }
-    public function setCategory($category = null) 
+    public function prepareCollection() 
     { 
-        if(!$category){
-            $category = \Mage::getModel('Model\Category');
-            $category = $category->fetchAll();
-        }
-        $this->categorys = $category;
+        $category = \Mage::getModel('Model\Category');
+        $collection = $category->fetchAll();
+        $this->setCollection($collection);
         return $this;
     }
-    public function getCategory()
+    public function prepareColumns()
     {
-        if(!$this->categorys){
-            $this->setCategory();
-        }
-        return $this->categorys;
+        $this->addColumn('categoryId', ['field' => 'categoryId', 'label' => 'id', 'type' => 'number']);
+        $this->addColumn('name', ['field' => 'name', 'label' => 'Name', 'type' => 'text']);
+        $this->addColumn('description', ['field' => 'description', 'label' => 'Description', 'type' => 'text']);
+        return $this;
+    }
+    public function prepareActions()
+    {
+        $this->addAction('edit', ['label' => 'Edit', 'method' => 'getEditUrl', 'ajax' => true]);
+        $this->addAction('delete', ['label' => 'Delete', 'method' => 'getDeleteUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function prepareButtons()
+    {
+        $this->addButtons('addnew', ['label' => 'Add New', 'method' => 'getAddNewUrl', 'ajax' => true]);
+        return $this;
+    }
+    public function getEditUrl($row)
+    {
+        $url = $this->getUrl()->geturl('form', null, ['id' => $row->categoryId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function getDeleteUrl($row)
+    {
+        $url = $this->getUrl()->geturl('delete', null, ['id' => $row->categoryId]);
+        return "mage.setUrl('{$url}').resetParams().load()";
+    }
+    public function getAddNewUrl()
+    {
+        $url = $this->getUrl()->geturl('form');
+        return "mage.setUrl('{$url}').resetParams().load()";
     }
     public function getName($category)
     {
@@ -45,6 +65,13 @@ class Grid extends \Block\Core\Template{
         }
         $name = implode('=>', $pathIds);
         return $name;
+    }
+    public function getFieldValue($row, $field)
+    {
+        if($field == 'name'){
+            return $this->getName($row);
+        }
+        return $row->$field;
     }
 }
 ?>

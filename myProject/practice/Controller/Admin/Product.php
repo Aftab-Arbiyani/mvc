@@ -137,7 +137,7 @@ class Product extends \Controller\Core\Admin
             }
             else
             {
-                $this->getMessage()->setFailure('Unable to delet data');
+                $this->getMessage()->setFailure('Unable to delete data');
             } 
             
             $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
@@ -164,5 +164,27 @@ class Product extends \Controller\Core\Admin
         $product->productId = $this->getRequest()->getGet('id');
         $product->save();
     } 
+    public function filterAction()
+    {
+        $filterData = $this->getRequest()->getPost('filter');
+        $filter = Mage::getModel('Model\Admin\Filter');
+        $filter->setFilter($filterData);
+
+        // print_r($filterData);
+
+        $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
+
+        $response = [
+            'status' => 'success',
+            'message' => 'vadsz',
+            'element' => [
+                'selector' => '#contentHtml',
+                'html' => $grid
+            ]
+        ];
+        header("Content-type: application/json; charset=utf-8");
+        echo json_encode($response);
+
+    }
 }
 ?>
