@@ -3,8 +3,6 @@
 namespace Block\Admin\Product\Edit\Tabs;
 use Mage;
 
-Mage::loadFileByClassName('Block\Core\Edit');
-
 class Form extends \Block\Core\Edit
 {
     protected $categoryOptions = [];

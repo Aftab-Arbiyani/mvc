@@ -4,8 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Excepiton;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-
 class Brand extends \Controller\Core\Admin
 {
     public function indexAction()

@@ -2,8 +2,6 @@
 
 namespace Block\Core;
 
-\Mage::loadFileByClassName('Block\Core\Template');
-
 class Layout extends Template
 {
     public function __construct()

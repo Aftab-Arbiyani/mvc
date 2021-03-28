@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Category;
 
-\Mage::loadFileByClassName('Block\Core\Grid');
-
 class Grid extends \Block\Core\Grid
 {
     protected $categoryOptions = [];

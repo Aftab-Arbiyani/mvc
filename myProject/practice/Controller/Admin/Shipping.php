@@ -4,10 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Model\Shipping');
-Mage::loadFileByClassName('Controller\Core\Admin');
-
-
 class Shipping extends \Controller\Core\Admin 
 {
     public function indexAction()

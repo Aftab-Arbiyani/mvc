@@ -4,9 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-Mage::loadFileByClassName('Model\Admin');
-
 class Admin extends \Controller\Core\Admin
 {
     public function indexAction()

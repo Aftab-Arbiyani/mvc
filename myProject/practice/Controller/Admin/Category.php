@@ -4,8 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-
 class Category extends \Controller\Core\Admin
 {
     public function indexAction()

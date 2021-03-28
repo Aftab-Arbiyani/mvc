@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Payment;
 
-\Mage::loadFileByClassName('Block\Core\Grid');
-    
 class Grid extends \Block\Core\Grid
 {
     public function prepareCollection($payment = null)

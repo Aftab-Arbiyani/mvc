@@ -4,9 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Model\Customer');
-Mage::loadFileByClassName('Controller\Core\Admin'); 
-
 class Customer extends \Controller\Core\Admin
 {
     public function indexAction()
@@ -118,7 +115,7 @@ class Customer extends \Controller\Core\Admin
             }
             else
             {
-                $this->getMessage()->setFailure('Unable to delet data');
+                $this->getMessage()->setFailure('Unable to delete data');
             } 
 
             $grid = Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
@@ -152,10 +149,10 @@ class Customer extends \Controller\Core\Admin
         $shippingAddress->setData($billingData);
 
         $billingAddress->customerId = $id;
-        $billingAddress->AddressType = 'billing';
+        $billingAddress->addressType = 'billing';
 
         $shippingAddress->customerId = $id;
-        $shippingAddress->AddressType = 'shipping';
+        $shippingAddress->addressType = 'shipping';
 
         $billingAddress->save();
         $shippingAddress->save();

@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Product;
 
-\Mage::loadFileByClassName('Block\Core\Grid');
-
 class Grid extends \Block\Core\Grid
 {
     public function prepareCollection()
@@ -41,7 +39,7 @@ class Grid extends \Block\Core\Grid
             $query = "SELECT * FROM `product`"; // LIMIT {$startFrom}, {$recordsPerPage}";
             $count = $product->getAdapter()->fetchOne($query);
 
-            $collection = $product->fetchAll();
+            $collection = $product->fetchAll($query);
             $this->setCollection($collection);
         }
 
@@ -65,17 +63,23 @@ class Grid extends \Block\Core\Grid
     {
         $this->addAction('edit', ['label' => 'Edit', 'method' => 'getEditUrl', 'ajax' => true]);
         $this->addAction('delete', ['label' => 'Delete', 'method' => 'getDeleteUrl', 'ajax' => true]);
+        $this->addAction('addttocart', ['label' => 'Add To Cart', 'method' => 'getCartUrl', 'ajax' => true]);
         return $this;
+    }
+    public function getCartUrl($row)
+    {
+        $url = $this->getUrl()->geturl('addToCart', 'admin_cart', ['id' => $row->productId]);
+        return "mage.setUrl('{$url}').load()";
     }
     public function getEditUrl($row)
     {
-        $url = $this->getUrl()->geturl('form', null, ['id' => $row->productId]);
-        return "mage.setUrl('{$url}').resetParams().load()";
+        $url = $this->getUrl()->geturl('form', 'admin_product', ['id' => $row->productId]);
+        return "mage.setUrl('{$url}').load()";
     }
     public function getDeleteUrl($row)
     {
-        $url = $this->getUrl()->geturl('delete', null, ['id' => $row->productId]);
-        return "mage.setUrl('{$url}').resetParams().load()";
+        $url = $this->getUrl()->geturl('delete', 'admin_product', ['id' => $row->productId]);
+        return "mage.setUrl('{$url}').load()";
     }
     public function prepareButtons()
     {

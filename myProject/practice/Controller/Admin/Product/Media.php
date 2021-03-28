@@ -4,8 +4,6 @@ namespace Controller\Admin\Product;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-
 class Media extends \Controller\Core\Admin
 {
     public function indexAction()

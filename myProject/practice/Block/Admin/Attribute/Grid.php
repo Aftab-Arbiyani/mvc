@@ -2,15 +2,51 @@
 
 namespace Block\Admin\Attribute;
 
-\Mage::loadFileByClassName('Block\Core\Grid');
-
 class Grid extends \Block\Core\Grid
 {
     public function prepareCollection()
     {
         $attribute = \Mage::getModel('Model\Attribute');
-        $collection = $attribute->fetchAll();
-        $this->setCollection($collection);
+
+        if (array_key_exists('p', $_GET)) {
+            $this->getPager()->setCurrentPage($_GET['p']);
+        }
+        $this->getPager()->setRecordsPerPage(2);
+
+        $recordsPerPage = $this->getPager()->getRecordsPerPage();
+        $page = $this->getPager()->getCurrentPage();
+        $startFrom = ($page - 1) * $recordsPerPage;
+
+        if($this->getFilter()->hasFilters())
+        {
+            $sets = "";
+            foreach ($this->getFilter()->getFilters() as $type => $filters)
+            {
+                
+                foreach ($filters as $key => $value)
+                {
+                    $sets = $sets . $key . "='" . $value . "' AND ";
+                }
+            }
+            $sets = rtrim($sets, " AND ");
+            $query = "SELECT * FROM `attribute` WHERE $sets";
+            $count = $attribute->getAdapter()->fetchOne($query);
+            $collection = $attribute->fetchAll($query);
+            $this->setCollection($collection);
+        }
+        else
+        {
+            $query = "SELECT * FROM `attribute`"; // LIMIT {$startFrom}, {$recordsPerPage}";
+            $count = $attribute->getAdapter()->fetchOne($query);
+
+            $collection = $attribute->fetchAll($query);
+            $this->setCollection($collection);
+        }
+
+        $this->getPager()->setTotalRecords($count); 
+        
+        $this->getPager()->calculatePage();
+
         return $this;
     }
     public function prepareColumns()

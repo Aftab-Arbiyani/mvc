@@ -23,5 +23,23 @@ class Customer extends Core\Table{
             self::STATUS_ENABLED=> "Enable"
         ];
     }
+    public function getBillingAddress()
+    {
+        $query = "SELECT * FROM `customer_address` WHERE `addressType`='billing' AND `customerId`='{$this->customerId}'";
+        $address = \Mage::getModel('Model\Customer\Address')->fetchRow($query);
+        if(!$address){
+            return \Mage::getModel('Model\Customer\Address');
+        }
+        return $address;
+    }
+    public function getShippingAddress()
+    {
+        $query = "SELECT * FROM `customer_address` WHERE `addressType`='shipping' AND `customerId`='{$this->customerId}'";
+        $address = \Mage::getModel('Model\Customer\Address')->fetchRow($query);
+        if(!$address){
+            return \Mage::getModel('Model\Customer\Address');
+        }
+        return $address;
+    }
 }
 ?> 

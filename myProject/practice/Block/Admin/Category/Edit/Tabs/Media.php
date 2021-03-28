@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Category\Edit\Tabs;
 
-\Mage::loadFileByClassName('Block\Core\Edit');
-
 class Media extends \Block\Core\Edit
 {
     protected $image = null;

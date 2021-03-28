@@ -3,8 +3,6 @@
 namespace Block\Admin\Customer\Edit\Tabs;
 use Mage; 
 
-Mage::loadFileByClassName('Block\Core\Edit');
-
 class Address extends \Block\Core\Edit 
 {
     

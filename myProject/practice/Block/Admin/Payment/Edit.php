@@ -2,7 +2,6 @@
 
 namespace Block\Admin\Payment;
 use Mage;
-Mage::loadFileByClassName('Block\Core\Edit');
 
 class Edit extends \Block\Core\Edit
 {

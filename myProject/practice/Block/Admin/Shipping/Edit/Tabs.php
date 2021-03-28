@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Shipping\Edit;
 
-\Mage::loadFileByClassName('Block\Core\Edit\Tabs');
-
 class Tabs extends \Block\Core\Edit\Tabs
 {
     public function prepareTab() 

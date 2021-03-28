@@ -4,10 +4,6 @@ namespace Controller\Admin\Product;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-Mage::loadFileByClassName('Model\Product\Group\Price'); 
-
-
 class Price extends \Controller\Core\Admin{
 
 

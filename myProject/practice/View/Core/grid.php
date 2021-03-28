@@ -45,7 +45,7 @@
                                         <?php endforeach; ?>
                                         <td>
                                             <?php foreach($actions as $action): ?>
-                                                <button onclick="<?php echo $this->getMethodUrl($collection, $action['method']); ?>"><?php echo $action['label']; ?></button>
+                                                <button type="button" onclick="<?php echo $this->getMethodUrl($collection, $action['method']); ?>"><?php echo $action['label']; ?></button>
                                             <?php endforeach; ?>
                                         </td>
                                     </tr>
@@ -53,7 +53,7 @@
                             <?php endif; ?>
                         </tbody>
                     </table>
-                    </form>
+                </form>
 
                     <button onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?php  echo $this->getPager()->getPrevious(); ?></button>
                     <button onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?= $this->getPager()->getCurrentPage() ?></button>

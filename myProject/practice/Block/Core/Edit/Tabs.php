@@ -3,8 +3,6 @@
 namespace Block\Core\Edit;
 use Mage;
 
-Mage::loadFileByClassName('Block\Core\Template');
-
 class Tabs extends \Block\Core\Template
 {
     protected $tableRow = null;

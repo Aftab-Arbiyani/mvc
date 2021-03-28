@@ -4,9 +4,6 @@ namespace Controller\Admin;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Model\Customer\Group');
-Mage::loadFileByClassName('Controller\Core\Admin');
-
 class CustomerGroup extends \Controller\Core\Admin 
 {
     public function indexAction()

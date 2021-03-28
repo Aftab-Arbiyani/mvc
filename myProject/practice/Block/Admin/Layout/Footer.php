@@ -2,8 +2,6 @@
 
 namespace Block\Admin\Layout;
 
-\Mage::loadFileByClassName('Block\Core\Template');
-
 class Footer extends \Block\Core\Template
 {
 

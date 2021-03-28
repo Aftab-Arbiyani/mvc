@@ -4,8 +4,6 @@ namespace Controller\Admin\Category;
 use Mage;
 use Exception;
 
-Mage::loadFileByClassName('Controller\Core\Admin');
-
 class Media extends \Controller\Core\Admin
 {
     public function indexAction()
@@ -139,7 +137,7 @@ class Media extends \Controller\Core\Admin
 
         $imageData = $this->getRequest()->getPost('image');
 
-        print_r($imageData);
+        // print_r($imageData);
         if (array_key_exists('remove', $imageData)) 
         {
             foreach ($imageData['remove'] as $key => $value) 
