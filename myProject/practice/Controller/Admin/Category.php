@@ -14,16 +14,7 @@ class Category extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Category\Grid')->toHtml();
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -35,18 +26,8 @@ class Category extends \Controller\Core\Admin
                 }
             }
             $formHtml = Mage::getBlock('Block\Admin\Category\Edit')->setTableRow($category)->toHtml();
+            $this->makeResponse($formHtml);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'excellent',
-                'element' =>[
-                    'selector' => '#contentHtml',
-                    'html' => $formHtml
-                ]
-            ];
-
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -73,27 +54,15 @@ class Category extends \Controller\Core\Admin
             }
 
             $categoryPathId = $modelCategory->pathId;
-
             $postData = $this->getRequest()->getPost('category');
             $modelCategory->setData($postData);
-
-            
             $modelCategory->save();
-
+            $this->getMessage()->setSuccess('Data saved successfully');
             $modelCategory->updatePathId();
             $modelCategory->updateChildrenPathIds($categoryPathId);
 
             $grid = Mage::getController('Block\Admin\Category\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
            
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
@@ -112,20 +81,10 @@ class Category extends \Controller\Core\Admin
             $categoryPathId = $category->pathId;
             $categoryParentId = $category->parentId;
             $category->updateChildrenPathIds($categoryPathId, $categoryParentId);
-
-
             $category->delete($id);
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $grid = Mage::getBlock('Block\Admin\Category\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }

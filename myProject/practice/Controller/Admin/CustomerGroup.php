@@ -14,16 +14,7 @@ class CustomerGroup extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\CustomerGroup\Grid')->toHtml();
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
 
     public function formAction()
@@ -36,18 +27,8 @@ class CustomerGroup extends \Controller\Core\Admin
                 }
             }
             $formHtml = Mage::getBlock('Block\Admin\CustomerGroup\Edit')->setTableRow($customerGroup)->toHtml();
+            $this->makeResponse($formHtml);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'excellent',
-                'element' =>[
-                    'selector' => '#contentHtml',
-                    'html' => $formHtml
-                ]
-            ];
-
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         }catch (Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -59,39 +40,23 @@ class CustomerGroup extends \Controller\Core\Admin
                 throw new Exception("Invalid Request");
             }
             $customerGroup = Mage::getModel('Model\Customer\Group');
-            if ($id = (int)$this->getRequest()->getGet('id'))
-            {
+            if ($id = (int)$this->getRequest()->getGet('id')){
                 $customerGroup = $customerGroup->load($id);
-                if(!$customerGroup)
-                {
+                if(!$customerGroup){
                     throw new Exception("No data Found");
                 }
             }
             $customerGroupData = $this->getRequest()->getPost('customerGroup');
-
             if(!$customerGroup->createdDate){
                 $customerGroup->createdDate = date('Y-m-d');
             }
 
             $customerGroup->setData($customerGroupData);
-            
-            if(!$customerGroup->save()){
-                $this->getMessage()->setSuccess('Data saved successfully!!');
-            }
-            else {
-                $this->getMessage()->setFailure('Unable to save data.');
-            }
+            $customerGroup->save();
+            $this->getMessage()->setSuccess('Data saved successfully!!');
             $grid = Mage::getBlock('Block\Admin\CustomerGroup\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
+
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -101,34 +66,16 @@ class CustomerGroup extends \Controller\Core\Admin
     {
         try{
             $id = (int)$this->getRequest()->getGet('id');
-
-            if(!$id)
-            {
+            if(!$id){
                 throw new Exception("Invalid Request.");
             }
 
-            $customerGroup = Mage::getModel('Model\Customer\Group');
-            
-            if($customerGroup->delete($id))
-            {
-                $this->getMessage()->setSuccess('Data deleted successfully');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to delet data');
-            } 
+            $customerGroup = Mage::getModel('Model\Customer\Group');  
+            $customerGroup->delete($id);
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $grid = Mage::getBlock('Block\Admin\CustomerGroup\Grid')->toHtml();
+            $this->makeResponse($grid);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }

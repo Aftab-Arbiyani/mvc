@@ -86,7 +86,32 @@ class Abstracts
         {
             return $this->message;
         }
-    
+        public function makeResponse($content = null, $left = null, $right = null)
+        {
+            $response = [
+
+                'element' => [
+                    [
+                        'selector' => '#contentHtml',
+                        'html' => $content
+                    ],
+                    [
+                        'selector' => '#messageHtml',
+                        'html' => Mage::getBlock('Block\Core\Layout\Message')->toHtml()
+                    ],
+                    [
+                        'selector' => '#leftHtml',
+                        'html' => $right
+                    ],
+                    [
+                        'selector' => '#rightHtml',
+                        'html' => $right
+                    ]
+                ]
+            ];
+            header("Content-type: application/json; charset=utf-8");
+            echo json_encode($response);
+        }
 }
 
 ?>

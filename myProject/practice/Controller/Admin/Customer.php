@@ -15,17 +15,7 @@ class Customer extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
-
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -37,18 +27,8 @@ class Customer extends \Controller\Core\Admin
                 }
             }
             $formHtml = Mage::getBlock('Block\Admin\Customer\Edit')->setTableRow($customer)->toHtml();
+            $this->makeResponse($formHtml);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'excellent',
-                'element' =>[
-                    'selector' => '#contentHtml',
-                    'html' => $formHtml
-                ]
-            ];
-
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -66,32 +46,22 @@ class Customer extends \Controller\Core\Admin
             if($id = (int)$this->getRequest()->getGet('id'))
             {
                 $customer = $customer->load($id);
-
-                if(!$customer)
-                {
+                if(!$customer){
                     throw new Exception('No data found');
                 }
-
                 $customer->updatedDate = date('Y-m-d');
             }
 
             $customerData = $this->getRequest()->getPost('customer');
-            if(!$customer->createdDate)
-            {
+            if(!$customer->createdDate){
                 $customer->createdDate = date('Y-m-d');
             }
+
             $customer->setData($customerData);
             $recordId = $customer->save();
-    
-            if($recordId)
-            {
-                $this->getMessage()->setSuccess('Data saved successfully!!');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to save data.');
-            }
+            $this->getMessage()->setSuccess('Data saved successfully!!');
             $this->redirect('form', null, ['tab' => 'address', 'recordId' => $recordId]);
+
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -101,35 +71,16 @@ class Customer extends \Controller\Core\Admin
     {
         try{
             $id = (int)$this->getRequest()->getGet('id');
-
-            if(!$id)
-            {
+            if(!$id){
                 throw new Exception("Invalid Request.");
             }
 
             $customer = Mage::getModel('Model\Customer');
-            
-            if($customer->delete($id))
-            {
-                $this->getMessage()->setSuccess('Data deleted successfully');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to delete data');
-            } 
-
+            $customer->delete($id);
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $grid = Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
-            
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
+
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -158,17 +109,7 @@ class Customer extends \Controller\Core\Admin
         $shippingAddress->save();
 
         $grid = Mage::getBlock('Block\Admin\Customer\Grid')->toHtml();
-        
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+        $this->makeResponse($grid);
     }
 }
 ?> 

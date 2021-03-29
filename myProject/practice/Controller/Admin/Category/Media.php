@@ -14,16 +14,7 @@ class Media extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Category\Grid')->toHtml();
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }    
     public function saveAction()
     {
@@ -42,26 +33,11 @@ class Media extends \Controller\Core\Admin
 
             $media->categoryId = $this->getRequest()->getGet('id');
             $media->image = $image;
+            $media->save();
 
-            if($media->save())
-            {
-                $this->getMessage()->setSuccess('Data saved successfully.');
-            }
-            else 
-            { 
-                $this->getMessage()->setFailure("Unable to save data.");
-            }
+            $this->getMessage()->setSuccess('Data saved successfully.');
             $form = Mage::getBlock('Block\Admin\Category\Edit')->setTableRow($media)->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $form
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($form);
 
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
@@ -115,16 +91,7 @@ class Media extends \Controller\Core\Admin
             }
 
             $form = Mage::getBlock('Block\Admin\Category\Edit')->setTableRow($image1)->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $form
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($form);
 
         } catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
@@ -153,16 +120,7 @@ class Media extends \Controller\Core\Admin
         }
 
         $form = Mage::getBlock('Block\Admin\Category\Edit')->setTableRow($image1)->toHtml();
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $form
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($form);
     }
 }
 

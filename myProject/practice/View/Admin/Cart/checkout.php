@@ -4,10 +4,7 @@
 <?php $paymentMethods = $this->getPaymentMethods(); ?>
 <?php $shippingMethods = $this->getShippingMethods(); ?>
 <?php $cart = $this->getCart(); ?>
-<?php $items = $this->getCart()->getItems(); 
-
-// print_r($items);
-?>
+<?php $items = $this->getCart()->getItems(); ?>
 
 <form action="" method="post" enctype="multipart/form-data">
     <table>    
@@ -39,7 +36,7 @@
         <tr> 
             <td><input type="checkbox" name="saveBilling" value="<?php echo $billingAddress->addressId ?>"></td>
             <td>Save to address book</td>
-            <td colspan="2" style="text-align: center;"><input type="button" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveBillingAddress', 'admin_checkout') ?>').load()" value="SUBMIT" onclick="" class='btn btn-primary'></td>
+            <td colspan="2" style="text-align: center;"><input type="button" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveBillingAddress', 'admin_checkout') ?>').load()" value="SUBMIT" onclick="" class='btn btn-primary' style="width:50%"></td>
         </tr>
         <tr style='text-align: center;'>
             <th style=" background-color: white; color: black">Shipping Address</th>
@@ -73,64 +70,62 @@
         <tr> 
             <td><input type="checkbox" name="saveShipping" value="<?php echo $shippingAddress->addressId ?>"></td>
             <td>Save to address book</td>
-            <td colspan="2" style="text-align: center;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveShippingAddress', 'admin_checkout'); ?>').load()" class='btn btn-primary'></td>
+            <td colspan="2" style="text-align: center;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveShippingAddress', 'admin_checkout'); ?>').load()" class='btn btn-primary' style="width:50%"></td>
         </tr>
     </table>
 
-    <div>
-        <table style="border: 1px solid black; float:left;   margin-left: 200px">
+    <table style="border: 1px solid black; float:left;   margin-left: 200px">
+        <tr style="border: 1px solid black;">
+            <th colspan="2">Payment Method</th>
+        </tr>
+        <tr style="border: 1px solid black;">
+            <td>Select</td>
+            <td>Name</td>
+        </tr>
+        <?php foreach ($paymentMethods as $methodId => $Name): ?>
             <tr style="border: 1px solid black;">
-                <th colspan="2">Payment Method</th>
+                <td><input type="radio" name="paymentMethod[paymentMethodId]" value="<?= $methodId ?>" <?php if($methodId == $cart->paymentMethodId): ?> checked <?php endif; ?>></td>
+                <td><?= $Name ?></td>
             </tr>
+        <?php endforeach; ?>
+        <tr>
+            <td colspan="2" style="text-align: left;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('savePaymentMethod', 'admin_checkout'); ?>').load()" class='btn btn-primary' style="width:50%"></td>
+        </tr>
+    </table><br><br>
+    <table style="float: right; margin-right: 200px">
+        <tr style="border: 1px solid black;">
+            <th colspan="3">Shipping Methods</th>
+        </tr>
+        <tr style="border: 1px solid black;">
+            <td>Select</td>
+            <td>Name</td>
+            <td>Amount</td>
+        </tr>
+        <?php foreach ($shippingMethods->getData() as $shippingMethod): ?>
             <tr style="border: 1px solid black;">
-                <td>Select</td>
-                <td>Name</td>
+                <td><input type="radio" name="shippingMethod[shippingMethodId]" value="<?= $shippingMethod->methodId ?>" <?php if($shippingMethod->methodId == $cart->shippingMethodId): ?> checked <?php endif; ?>></td>
+                <td><?= $shippingMethod->Name ?></td>
+                <td><?= $shippingMethod->Amount ?></td>
             </tr>
-            <?php foreach ($paymentMethods as $methodId => $Name): ?>
-                <tr style="border: 1px solid black;">
-                    <td><input type="radio" name="paymentMethod[paymentMethodId]" value="<?= $methodId ?>" <?php if($methodId == $cart->paymentMethodId): ?> checked <?php endif; ?>></td>
-                    <td><?= $Name ?></td>
-                </tr>
-            <?php endforeach; ?>
-            <tr>
-                <td colspan="2" style="text-align: left;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('savePaymentMethod', 'admin_checkout'); ?>').load()" class='btn btn-primary' style="width:50%"></td>
-            </tr>
-        </table><br><br>
-        <table style="float: right; margin-right: 200px">
-            <tr style="border: 1px solid black;">
-                <th colspan="3">Shipping Methods</th>
-            </tr>
-            <tr style="border: 1px solid black;">
-                <td>Select</td>
-                <td>Name</td>
-                <td>Amount</td>
-            </tr>
-            <?php foreach ($shippingMethods->getData() as $shippingMethod): ?>
-                <tr style="border: 1px solid black;">
-                    <td><input type="radio" name="shippingMethod[shippingMethodId]" value="<?= $shippingMethod->methodId ?>" <?php if($shippingMethod->methodId == $cart->shippingMethodId): ?> checked <?php endif; ?>></td>
-                    <td><?= $shippingMethod->Name ?></td>
-                    <td><?= $shippingMethod->Amount ?></td>
-                </tr>
-            <?php endforeach; ?>
-            <tr style="border: 1px solid black;">
-                <td colspan="3" style="text-align: left;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveShippingMethod', 'admin_checkout'); ?>').load()" class='btn btn-primary'></td>
-            </tr>
-        </table>
+        <?php endforeach; ?>
+        <tr style="border: 1px solid black;">
+            <td colspan="3" style="text-align: left;"><input type="button" name="" value="SUBMIT" onclick="mage.setForm(this).setUrl('<?php echo $this->getUrl()->geturl('saveShippingMethod', 'admin_checkout'); ?>').load()" class='btn btn-primary' style="width:50%"></td>
+        </tr>
+    </table>
         <br><br>
-    </div>
 
-    <table style="border: 1px solid black;">
+    <table style="border: 1px solid black; float: right;">
         <tr style="border: 1px solid black;">
             <td>Base Total</td>
-            <td>nj,</td>
+            <td><?= $this->getTotal() ?></td>
         </tr>
         <tr style="border: 1px solid black;">
             <td>Shipping Charges</td>
-            <td>knm</td>
+            <td><?= $cart->shippingAmount ?></td>
         </tr>
         <tr style="border: 1px solid black;">
             <td>Grand Total</td>
-            <td>nk</td>
+            <td><?= $this->getTotal() + $cart->shippingAmount ?></td>
         </tr>
     </table>
 </form>

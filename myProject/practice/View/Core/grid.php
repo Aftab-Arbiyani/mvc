@@ -2,7 +2,7 @@
 <?php $buttons = $this->getButtons(); ?>
 <?php $columns = $this->getColumns(); ?>
 <?php $actions = $this->getActions(); ?>
-<?php //print_r($this->getPager()); ?>
+<?php //echo '<pre>'; print_r($this->getPager()); ?>
 
 <div class="container mt-2">
     <div class="row">
@@ -55,9 +55,9 @@
                     </table>
                 </form>
 
-                    <button onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?php  echo $this->getPager()->getPrevious(); ?></button>
-                    <button onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?= $this->getPager()->getCurrentPage() ?></button>
-                    <button onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?php echo $this->getPager()->getNext(); ?></button>
+                    <button type="button" onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getPrevious()]); ?>').load()"><?php  echo $this->getPager()->getPrevious(); ?></button>
+                    <button type="button" onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getCurrentPage()]); ?>').load()"><?= $this->getPager()->getCurrentPage() ?></button>
+                    <button type="button" onclick="mage.setUrl('<?php echo $this->getUrl()->geturl('grid', null, ['p' => $this->getPager()->getNext()]); ?>').load()"><?php echo $this->getPager()->getNext(); ?></button>
                 </div>
             </div>  
         </div>

@@ -66,6 +66,15 @@ class Checkout extends \Block\Core\Template
         $shippingMethods = $shippingMethods->fetchAll();
         return $shippingMethods;
     }
+    public function getTotal()
+    {
+        $cartItems = $this->getCart()->getItems();
+        $total = 0;
+        foreach ($cartItems->getData() as $key => $cartItem) {
+            $total = $total + (($cartItem->price * $cartItem->quantity) - ($cartItem->discount * $cartItem->quantity));
+        }
+        return $total;
+    }
 }
 
 ?>

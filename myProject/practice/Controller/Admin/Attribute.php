@@ -13,17 +13,7 @@ class Attribute extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
-
-        $response = [
-            'status' => 'success',
-            'message' => 'dsac',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header('Content-type: application/json; charset=utf-8');
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -35,17 +25,8 @@ class Attribute extends \Controller\Core\Admin
                 }
             }
             $formHtml = Mage::getBlock('Block\Admin\Attribute\Edit')->setTableRow($attribute)->toHtml();
-            
-            $response = [
-                'status' => 'success',
-                'message' => 'edksa',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $formHtml
-                ]
-            ];
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($response);
+            $this->makeResponse($formHtml);
+
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -76,28 +57,12 @@ class Attribute extends \Controller\Core\Admin
 
             $attribute->setData($attributeData);
 
-            if($attribute->save())
-            {
-                $this->getMessage()->setSuccess('Data saved successfully!!');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to save data.');
-            }
-
+            $attribute->save();
+            $this->getMessage()->setSuccess('Data saved successfully!!');
+           
             $grid = Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'ewfa',
-                'element' => [
-                    'selector' => '#contentHtml', 
-                    'html' => $grid
-                ]
-            ];
-
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($response);
+            $this->makeResponse($grid);
+            
         } 
         catch (Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
@@ -112,28 +77,11 @@ class Attribute extends \Controller\Core\Admin
             }
 
             $attribute = Mage::getModel('Model\Attribute');
-            if($attribute->delete($id))
-            {
-                $this->getMessage()->setSuccess('Data deleted successfully');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to delet data');
-            } 
+            $attribute->delete($id);
 
-
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $grid = Mage::getBlock('Block\Admin\Attribute\Grid')->toHtml();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid 
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
         } 
         catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage);

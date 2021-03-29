@@ -28,7 +28,7 @@ class Grid extends \Block\Core\Grid
                     $sets = $sets . $key . "='" . $value . "' AND ";
                 }
             }
-            $sets = rtrim($sets, " AND ");
+            $sets = rtrim($sets, " AND "); 
             $query = "SELECT * FROM `product` WHERE $sets";
             $count = $product->getAdapter()->fetchOne($query);
             $collection = $product->fetchAll($query);
@@ -36,8 +36,9 @@ class Grid extends \Block\Core\Grid
         }
         else
         {
-            $query = "SELECT * FROM `product`"; // LIMIT {$startFrom}, {$recordsPerPage}";
-            $count = $product->getAdapter()->fetchOne($query);
+            $query = "SELECT * FROM `product` LIMIT {$startFrom}, {$recordsPerPage}";
+            $query1 = "SELECT * FROM `product`;";
+            $count = $product->getAdapter()->fetchOne($query1);
 
             $collection = $product->fetchAll($query);
             $this->setCollection($collection);

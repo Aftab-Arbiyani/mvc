@@ -14,17 +14,7 @@ class Cms extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Cms\Grid')->toHtml();
-
-        $response = [
-            'status' => 'success',
-            'message' => 'fdsxc',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header('Content-type: application/json; charset=utf-8');
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -36,17 +26,8 @@ class Cms extends \Controller\Core\Admin
                     }
                 }
                 $form = Mage::getBlock('Block\Admin\Cms\Edit')->setTableRow($cms)->toHtml();
+                $this->makeResponse($form);
 
-                $response = [
-                    'status' => 'success',
-                    'message' => 'ygwjdf',
-                    'element' => [
-                        'selector' => '#contentHtml',
-                        'html' => $form
-                    ]
-                ];
-                header('Content-type: application/json; charset=utf-8');
-                echo json_encode($response);
         }catch (Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -65,41 +46,21 @@ class Cms extends \Controller\Core\Admin
             if($id = (int)$this->getRequest()->getGet('id'))
             {
                 $cms = $cms->load($id);
-
-                if(!$cms)
-                {
+                if(!$cms){
                     throw new Exception("Record not found.");
                 }
             }
             $cmsData = $this->getRequest()->getPost('cms');
-
-            if(!$cms->createdDate)
-            {
+            if(!$cms->createdDate){
                 $cms->createdDate = date('Y-m-d');
             }
-
             $cms->setData($cmsData);
-
-            if(!$cms->save())
-            {
-                $this->getMessage()->setSuccess('Data saved successfully!!');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to save data.');
-            }
-
+            $cms->save();
+            $this->getMessage()->setSuccess('Data saved successfully!!');
+            
             $grid = Mage::getBlock('Block\Admin\Cms\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
+
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -114,19 +75,10 @@ class Cms extends \Controller\Core\Admin
             
             $cms = Mage::getModel('Model\Cms');
             $cms->delete($id);
-
+            $this->getMessage()->setSuccess('Data deleted successfully!!');
             $grid = Mage::getBlock('Block\Admin\Cms\Grid')->toHtml();
+            $this->makeResponse($grid);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }

@@ -19,19 +19,11 @@ class Cart extends \Controller\Core\Admin
             }
             $cart = $this->getCart();
             $cart->addItemToCart($product, 1, true);
+
+            $this->getMessage()->setSuccess('Data saved successfully.');
             $grid = Mage::getBlock('Block\Admin\Cart\Cart')->setCart($cart)->toHtml();
-            
-            $response=[
-                'status' => 'success',
-                'message' => 'jhba',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($response);
+            $this->makeResponse($grid);
+
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -68,22 +60,11 @@ class Cart extends \Controller\Core\Admin
                 $cartItem->quantity = $quantity;
                 $cartItem->save();
             }
+            
             $this->getMessage()->setSuccess('Cart updated');
-
             $grid = Mage::getBlock('Block\Admin\Cart\Cart')->setCart($cart)->toHtml();
-            
-            $response=[
-                'status' => 'success',
-                'message' => 'jhba',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($response);
-            
+            $this->makeResponse($grid);
+
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -98,25 +79,11 @@ class Cart extends \Controller\Core\Admin
             }
 
             $cartItem = Mage::getModel('Model\Cart\Item');
-
-            if($cartItem->delete($id))
-            {
-                $this->getMessage()->setSuccess('Data deleted successfully');
-            } 
-
+            $cartItem->delete($id);
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $cart = $this->getCart();
             $grid = Mage::getBlock('Block\Admin\Cart\Cart')->setCart($cart)->toHtml();
-            
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
 
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
@@ -127,33 +94,8 @@ class Cart extends \Controller\Core\Admin
         $customerId = $this->getRequest()->getPost('customer');
         $cart = $this->getCart($customerId['customerId']);
         $grid = Mage::getBlock('Block\Admin\Cart\Cart')->setCart($cart)->toHtml();
-            
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
-    // public function checkoutAction()
-    // {
-    //     $cart = $this->getCart();
-    //     $grid = Mage::getBlock('Block\Admin\Cart\Checkout')->setCart($cart)->toHtml();
-    //     $response = [
-    //         'status' => 'success',
-    //         'message' => 'vadsz',
-    //         'element' => [
-    //             'selector' => '#contentHtml',
-    //             'html' => $grid
-    //         ]
-    //     ];
-    //     header("Content-type: application/json; charset=utf-8");
-    //     echo json_encode($response);
-    // }
 }
 
 

@@ -14,16 +14,7 @@ class Product extends \Controller\Core\Admin
     public function gridAction() 
     {
         $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz', 
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -35,18 +26,8 @@ class Product extends \Controller\Core\Admin
                 }
             }
             $formHtml = Mage::getBlock('Block\Admin\Product\Edit')->setTableRow($product)->toHtml();
-            
-            $response = [
-                'status' => 'success',
-                'message' => 'excellent',
-                'element' =>[
-                    'selector' => '#contentHtml',
-                    'html' => $formHtml
-                ]
-            ];
+            $this->makeResponse($formHtml);
 
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -60,25 +41,20 @@ class Product extends \Controller\Core\Admin
 
             $product = Mage::getModel('Model\Product');
 
-            if($id = (int)$this->getRequest()->getGet('id')){
-                
+            if($id = (int)$this->getRequest()->getGet('id')){    
                 $product = $product->load($id);
- 
-                if(!$product) 
-                {
+                if(!$product){
                     throw new Exception("Record not found.");
                 }
-
                 $product->updatedDate = date('Y-m-d');
             }
 
             $productData = $this->getRequest()->getPost('product');
-            if(!$product->createdDate)
-            {
+            if(!$product->createdDate){
                 $product->createdDate = date('Y-m-d');
             }
-            $product->setData($productData);
 
+            $product->setData($productData);
             if($product->save())
             {
                 $this->getMessage()->setSuccess('Data saved successfully!!');
@@ -99,17 +75,7 @@ class Product extends \Controller\Core\Admin
             }
 
             $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
 
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
@@ -120,34 +86,16 @@ class Product extends \Controller\Core\Admin
     {
         try{
             $id = (int)$this->getRequest()->getGet('id');
-            if(!$id)
-            {
+            if(!$id){
                 throw new Exception("Invalid Request.");
             }
 
             $product = Mage::getModel('Model\Product');
-
-            if($product->delete($id))
-            {
-                $this->getMessage()->setSuccess('Data deleted successfully');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to delete data');
-            } 
-            
+            $product->delete($id);
+            $this->getMessage()->setSuccess('Data deleted successfully');
             $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
+            $this->makeResponse($grid);
 
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
         }catch(Exception $e){
             $this->getMessage()->setFailure($e->getMessage());
         }
@@ -166,21 +114,8 @@ class Product extends \Controller\Core\Admin
         $filter = Mage::getModel('Model\Admin\Filter');
         $filter->setFilter($filterData);
 
-        // print_r($filterData);
-
         $grid = Mage::getBlock('Block\Admin\Product\Grid')->toHtml();
-
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
-
+        $this->makeResponse($grid);
     }
 }
 ?>

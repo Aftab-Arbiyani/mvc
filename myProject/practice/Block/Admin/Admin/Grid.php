@@ -36,10 +36,11 @@ class Grid extends \Block\Core\Grid
         }
         else
         {
-            $query = "SELECT * FROM `admin`"; // LIMIT {$startFrom}, {$recordsPerPage}";
-            $count = $admin->getAdapter()->fetchOne($query);
+            $query = "SELECT * FROM `admin` LIMIT {$startFrom}, {$recordsPerPage}";
+            $query1 = "SELECT * FROM `admin`;";
+            $count = $admin->getAdapter()->fetchOne($query1);
 
-            $collection = $admin->fetchAll();
+            $collection = $admin->fetchAll($query);
             $this->setCollection($collection);
         }
         $this->getPager()->setTotalRecords($count);

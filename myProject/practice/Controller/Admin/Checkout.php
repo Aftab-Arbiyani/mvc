@@ -135,9 +135,20 @@ class Checkout extends \Controller\Core\Admin
             $modelCart = Mage::getModel('Model\Cart')->load($cart->cartId);
             $modelCart->shippingMethodId = $shippingMethod['shippingMethodId'];
             $modelShipping = Mage::getModel('Model\Shipping')->load($shippingMethod['shippingMethodId']);
-            $modelCart->shippingAmount = $modelShipping->methodId;
+            $modelCart->shippingAmount = $modelShipping->Amount;
+            $modelCart->save();
+            $modelCart->total = $this->getTotal();
             $modelCart->save();
         }
+    }
+    public function getTotal()
+    {
+        $cartItems = $this->getCart()->getItems();
+        $total = 0;
+        foreach ($cartItems->getData() as $key => $cartItem) {
+            $total = $total + (($cartItem->price * $cartItem->quantity) - ($cartItem->discount * $cartItem->quantity));
+        }
+        return $total;
     }
 }
 

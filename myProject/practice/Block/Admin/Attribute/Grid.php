@@ -36,7 +36,8 @@ class Grid extends \Block\Core\Grid
         }
         else
         {
-            $query = "SELECT * FROM `attribute`"; // LIMIT {$startFrom}, {$recordsPerPage}";
+            $query = "SELECT * FROM `attribute` LIMIT {$startFrom}, {$recordsPerPage}";
+            $query1 = "SELECT * FROM `attribute`;";
             $count = $attribute->getAdapter()->fetchOne($query);
 
             $collection = $attribute->fetchAll($query);

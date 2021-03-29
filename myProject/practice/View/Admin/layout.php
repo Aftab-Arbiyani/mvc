@@ -10,7 +10,7 @@
     </head>
     <body>
         <div> <?php echo $this->getChild('header')->toHtml();  ?> </div>
-        <div><?php echo $this->createBlock('Block\Core\Layout\Message')->toHtml(); ?> </div>
+        <div><?php echo $this->getChild('message')->toHtml(); ?> </div>
         <div><?php echo $this->getChild('content')->toHtml();  ?></div>
         <div><?php echo $this->getChild('footer')->toHtml();  ?></div>
     </body>

@@ -2,7 +2,7 @@
 
 namespace Controller\Admin;
 use Mage;
-use Excepiton;
+use Exception;
 
 class Brand extends \Controller\Core\Admin
 {
@@ -13,17 +13,7 @@ class Brand extends \Controller\Core\Admin
     public function gridAction()
     {
         $grid = Mage::getBlock('Block\Admin\Brand\Grid')->toHtml();
-
-        $response = [
-            'status' => 'success',
-            'message' => 'vadsz',
-            'element' => [
-                'selector' => '#contentHtml',
-                'html' => $grid
-            ]
-        ];
-        header("Content-type: application/json; charset=utf-8");
-        echo json_encode($response);
+        $this->makeResponse($grid);
     }
     public function formAction()
     {
@@ -31,22 +21,12 @@ class Brand extends \Controller\Core\Admin
             $brand = Mage::getModel('Model\Brand');
             if($id = (int)$this->getRequest()->getGet('id')){
                 if(!$brand->load($id)){
-                    throw new \Exception("No data found");
+                    throw new Exception("No data found");
                 }
             }
 
             $form = Mage::getBlock('Block\Admin\Brand\Edit')->setTableRow($brand)->toHtml();
-
-            $response = [
-                'status' => 'success',
-                'message' => 'wdcs',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $form
-                ]
-            ];
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($response);
+            $this->makeResponse($form);
 
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
@@ -85,27 +65,11 @@ class Brand extends \Controller\Core\Admin
             
             move_uploaded_file($tmpName, 'C:\xampp\htdocs\myProject\practice\Image\\'.$image);
             $brand->image = $image;
-    
-            if($brand->save())
-            {
-                $this->getMessage()->setSuccess('Data saved successfully!!');
-            }
-            else
-            {
-                $this->getMessage()->setFailure('Unable to save data.');
-            }
-
+            $brand->save();
+            
+            $this->getMessage()->setSuccess('Data saved successfully!!');
             $grid = Mage::getBlock('Block\Admin\Brand\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+            $this->makeResponse($grid);
 
         } catch (Exception $e) {
             $this->getMessage()->setFailure($e->getMessage());
@@ -121,16 +85,7 @@ class Brand extends \Controller\Core\Admin
         $brand->delete($id);
         
         $grid = Mage::getBlock('Block\Admin\Brand\Grid')->toHtml();
-            $response = [
-                'status' => 'success',
-                'message' => 'vadsz',
-                'element' => [
-                    'selector' => '#contentHtml',
-                    'html' => $grid
-                ]
-            ];
-            header("Content-type: application/json; charset=utf-8");
-            echo json_encode($response);
+        $this->makeResponse($grid);
     }
 }
 

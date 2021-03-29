@@ -1,4 +1,4 @@
-<div>
+<div id="messageHtml">
     <?php if($success = $this->getMessage()->getSuccess()): $this->getMessage()->clearSuccess(); ?>
     <div class="alert alert-success" role="alert"> <?php echo $success; ?></div>
     <?php endif ?>
